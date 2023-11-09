@@ -1,13 +1,16 @@
 using Hangfire;
+using Hangfire.Console;
+using Hangfire.Server;
 using Hangfire.SqlServer;
 using Orquestror.Filter;
+using Orquestror.JobsDefault;
+using System;
+using System.Diagnostics;
 namespace Orquestror;
 public class Startup{
     public IConfiguration Configuration { get; }
-     private const string NeverExecute = "0 0 5 31 2 ?";
-    public Startup(IConfiguration configuration){
-        Configuration = configuration;
-    }
+    private const string NeverExecute = "0 0 5 31 2 ?";
+    public Startup(IConfiguration configuration) => Configuration = configuration;
 
     private IEnumerable<IDisposable> GetHandfireServers()
     {
@@ -22,7 +25,8 @@ public class Startup{
             QueuePollInterval = TimeSpan.Zero,
             UseRecommendedIsolationLevel = true,
             DisableGlobalLocks = true
-        });
+        })
+        .UseConsole();
         yield return new BackgroundJobServer();
     }
 
@@ -82,7 +86,7 @@ public class Startup{
         app.UseAuthorization();
 
         app.UseRouting();
-        // ConfigureJobs();
+        ConfigureJobs();
 
         app.UseEndpoints(endpoints =>
         {
@@ -94,5 +98,45 @@ public class Startup{
             );
 
          app.UseHangfireServer();
+    }
+    [Obsolete]
+    public void ConfigureJobs()
+    {
+
+        RecurringJob.AddOrUpdate(() => ExecutionModel(), "1 * * * * *");
+        RecurringJob.AddOrUpdate(() => PythonJobTestA(), "1 * * * * *");
+    }
+
+    public void ExecutionModel(){
+        TestPython test = new TestPython();
+        
+    }
+    public void PythonJobTestA(){
+        Console.WriteLine("Simple Python Job Test A");
+         // Caminho para o interpretador Python
+        string pythonPath = @"C:\Windows\py.exe";
+        // Caminho para o script Python 
+        string scriptPath = @"C:\Users\jagjferr\Documents\test.py";
+
+        // Cria um novo processo
+        var process = new Process()
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = pythonPath,
+                Arguments = scriptPath,
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+            }
+        };
+
+        // Inicia o processo e aguarda até que ele termine
+        process.Start();
+        string output = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        // Imprime a saída do script Python
+        Console.WriteLine(output);
     }
 }

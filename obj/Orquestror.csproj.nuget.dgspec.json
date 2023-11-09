@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[1.4.2, )"
             },
+            "Hangfire.Console.Extensions": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
             "Hangfire.SqlServer": {
               "target": "Package",
               "version": "[1.8.6, )"
@@ -53,6 +57,14 @@
             "Microsoft.Data.SqlClient": {
               "target": "Package",
               "version": "[5.2.0-preview3.23201.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.24, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.24, )"
             },
             "Microsoft.Owin": {
               "target": "Package",
@@ -70,6 +82,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.24, 6.0.24]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.24, 6.0.24]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.24, 6.0.24]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.24, 6.0.24]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -78,7 +108,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.415\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
